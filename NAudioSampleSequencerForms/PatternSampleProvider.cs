@@ -1,4 +1,11 @@
-﻿using System;
+﻿/***************************************************************************************
+    Title: NAudioWPFDemo Source Code
+    Author: Mark Heath
+    Date: November 4, 2017
+    Availability: http://naudio.codeplex.com/SourceControl/latest#readme.txt
+***************************************************************************************/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,15 +17,23 @@ namespace NAudioSampleSequencerForms
 {
     class PatternSampleProvider : ISampleProvider
     {
-        private readonly MixingSampleProvider mixer;
-        private readonly WaveFormat waveFormat;
-        private readonly PatternSequencer sequencer;
+        private MixingSampleProvider mixer;
+        private WaveFormat waveFormat;
+        public PatternSequencer Sequencer { get; set; }
+        public Samples Samples { get; set; }
 
         public PatternSampleProvider(Pattern pattern)
         {
-            var samples = new Samples();
-            this.sequencer = new PatternSequencer(pattern, samples);
-            this.waveFormat = samples.WaveFormat;
+            Samples = new Samples();
+            this.Sequencer = new PatternSequencer(pattern, Samples);
+            this.waveFormat = Samples.WaveFormat;
+            mixer = new MixingSampleProvider(waveFormat);
+        }
+
+        public void Reset(Pattern pattern)
+        {
+            this.Sequencer = new PatternSequencer(pattern, Samples);
+            this.waveFormat = Samples.WaveFormat;
             mixer = new MixingSampleProvider(waveFormat);
         }
 
@@ -26,11 +41,11 @@ namespace NAudioSampleSequencerForms
         {
             get
             {
-                return sequencer.Tempo;
+                return Sequencer.Tempo;
             }
             set
             {
-                sequencer.Tempo = value;
+                Sequencer.Tempo = value;
             }
         }
 
@@ -41,7 +56,7 @@ namespace NAudioSampleSequencerForms
 
         public int Read(float[] buffer, int offset, int count)
         {
-            foreach (var mixerInput in sequencer.GetNextMixerInputs(count))
+            foreach (var mixerInput in Sequencer.GetNextMixerInputs(count))
             {
                 mixer.AddMixerInput(mixerInput);
             }

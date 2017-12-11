@@ -14,13 +14,59 @@ namespace NAudioSampleSequencerForms
         private Pattern pattern;
         private PatternSampleProvider patternSequencer;
         private int tempo;
+        private List<string> notes;
         private List<SampleControlCollection> sccList;
 
         public Form1()
         {
             InitializeComponent();
-            tempo = Convert.ToInt32(tempoTextBox.Text); 
-            PatternDataGridInitialization();
+
+            tempo = Convert.ToInt32(tempoTextBox.Text);
+            sccList = new List<SampleControlCollection>();
+            notes = new List<string>();
+
+            //patternDataGrid initialization
+            patternDataGrid.ColumnCount = 17;
+            patternDataGrid.RowCount = 4;
+
+            patternDataGrid.CellClick += new DataGridViewCellEventHandler(patternDataGrid_CellClick);
+
+            notes.Add("kick-trimmed.wav");
+            notes.Add("snare-trimmed.wav");
+            notes.Add("closed-hats-trimmed.wav");
+            notes.Add("open-hats-trimmed.wav");
+
+            this.pattern = new Pattern(notes, 16);
+
+            // auto-setup with a simple example beat
+            this.pattern[0, 0] = this.pattern[0, 8] = 127;
+            this.pattern[1, 4] = this.pattern[1, 12] = 127;
+            for (int n = 0; n < pattern.Steps; n++)
+            {
+                this.pattern[2, n] = 127;
+            }
+
+            DrawNoteNames();
+            DrawPattern();
+
+            //SampleControlCollection initialization
+            string[] defaultFiles = { "D:/VS Workspace/NAudioSampleSequencerForms/NAudioSampleSequencerForms/Samples/kick-trimmed.wav",
+                "D:/VS Workspace/NAudioSampleSequencerForms/NAudioSampleSequencerForms/Samples/snare-trimmed.wav",
+                "D:/VS Workspace/NAudioSampleSequencerForms/NAudioSampleSequencerForms/Samples/closed-hat-trimmed.wav",
+                "D:/VS Workspace/NAudioSampleSequencerForms/NAudioSampleSequencerForms/Samples/open-hat-trimmed.wav"};
+
+            for (int i = 0; i < 4; i++)
+            {
+                SampleControlCollection scc = new SampleControlCollection();
+                sccList.Add(scc);
+                scc.Name = "scc" + (sccList.Count - 1);
+                scc.Location = new Point(0, 350 + (100 * (sccList.Count - 1)));
+                scc.AddToComboBox(defaultFiles[i]);
+
+                this.Controls.Add(scc);
+            }
+
+            patternSequencer = new PatternSampleProvider(pattern);
         }
 
         private void masterPlaybackButton_Click(object sender, EventArgs e)
@@ -30,12 +76,78 @@ namespace NAudioSampleSequencerForms
 
         private void newSampleMenuItem_Click(object sender, EventArgs e)
         {
-            
+            string defaultFile = "D:/VS Workspace/NAudioSampleSequencerForms/NAudioSampleSequencerForms/Samples/snare-trimmed.wav";
+
+            SampleControlCollection scc = new SampleControlCollection();
+            sccList.Add(scc);
+            scc.Name = "scc" + (sccList.Count - 1);
+            scc.Location = new Point(0, 350 + (100 * (sccList.Count - 1)));
+            scc.AddToComboBox(defaultFile);
+
+            //notes.Add("snare-trimmed.wav");
+
+            this.Controls.Add(scc);
+
+            patternSequencer.Samples.AddNewSample(defaultFile);
+
+            AddNewSampleRow();
         }
 
         private void patternDataGrid_CellContentClick(object sender, EventArgs e)
         {
 
+        }
+
+        private void patternDataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridViewCell cell = patternDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex];
+            PatternIndex pi = (PatternIndex)cell.Tag;
+
+            pattern[pi.Note, pi.Step] = pattern[pi.Note, pi.Step] == 0 ? (byte)127 : (byte)0;
+            if (GetBackColor(pi.Note, pi.Step) == false)
+            {
+                cell.Style.BackColor = Color.LightSalmon;
+            }
+            else
+            {
+                cell.Style.BackColor = Color.White;
+            }
+        }
+
+        private void stopPlaybackButton_Click(object sender, EventArgs e)
+        {
+            Stop();
+        }
+
+        private void setTempoButton_Click(object sender, EventArgs e)
+        {
+            tempo = Convert.ToInt32(tempoTextBox.Text);
+        }
+
+        private void AddNewSampleRow()
+        {
+            string defaultSample = "snare-trimmed.wav";
+            var oldPattern = this.pattern;
+
+            this.patternDataGrid.Rows.Add();
+            notes.Add(defaultSample);
+            this.pattern = new Pattern(notes, 16);
+
+            for (int n = 0; n < oldPattern.Notes; n++)
+            {
+                for (int j = 0; j < oldPattern.Steps; j++)
+                {
+                    this.pattern[n, j] = oldPattern[n, j];
+                }
+            }
+
+            //for (int k = 0; k < pattern.Steps; k++)
+            //{
+            //    this.pattern[pattern.Notes - 1, k] = 0;
+            //}
+
+            DrawNoteNames();
+            DrawPattern();
         }
 
         private void Play()
@@ -45,28 +157,11 @@ namespace NAudioSampleSequencerForms
                 Stop();
             }
             waveOut = new WaveOut();
-            this.patternSequencer = new PatternSampleProvider(pattern);
+            //this.patternSequencer = new PatternSampleProvider(pattern);
+            this.patternSequencer.Reset(pattern);
             this.patternSequencer.Tempo = tempo;
             waveOut.Init(patternSequencer);
             waveOut.Play();
-        }
-
-        private void PatternDataGridInitialization()
-        {
-            patternDataGrid.ColumnCount = 17;
-            patternDataGrid.RowCount = 4;
-            patternDataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(patternDataGrid_CellClick);
-            var notes = new string[] { "Kick", "Snare", "Closed Hats", "Open Hats" };
-            this.pattern = new Pattern(notes, 16);
-            // auto-setup with a simple example beat
-            this.pattern[0, 0] = this.pattern[0, 8] = 127;
-            this.pattern[1, 4] = this.pattern[1, 12] = 127;
-            for (int n = 0; n < pattern.Steps; n++)
-            {
-                this.pattern[2, n] = 127;
-            }
-            DrawNoteNames();
-            DrawPattern();
         }
 
         private void DrawNoteNames()
@@ -105,22 +200,6 @@ namespace NAudioSampleSequencerForms
             }
         }
 
-        private void patternDataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            DataGridViewCell cell = patternDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex];
-            PatternIndex pi = (PatternIndex)cell.Tag;
-
-            pattern[pi.Note, pi.Step] = pattern[pi.Note, pi.Step] == 0 ? (byte)127 : (byte)0;
-            if (GetBackColor(pi.Note, pi.Step) == false)
-            {
-                cell.Style.BackColor = Color.LightSalmon;
-            }
-            else
-            {
-                cell.Style.BackColor = Color.White;
-            }
-        }
-
         class PatternIndex
         {
             public PatternIndex(int note, int step)
@@ -132,24 +211,14 @@ namespace NAudioSampleSequencerForms
             public int Step { get; private set; }
         }
 
-        private void stopPlaybackButton_Click(object sender, EventArgs e)
-        {
-            Stop();
-        }
-
         private void Stop()
         {
             if (waveOut != null)
             {
-                this.patternSequencer = null;
+                //this.patternSequencer = null;
                 waveOut.Dispose();
                 waveOut = null;
             }
-        }
-
-        private void setTempoButton_Click(object sender, EventArgs e)
-        {
-            tempo = Convert.ToInt32(tempoTextBox.Text);
         }
     }
 }

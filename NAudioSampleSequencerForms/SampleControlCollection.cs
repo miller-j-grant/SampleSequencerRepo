@@ -39,5 +39,11 @@ namespace NAudioSampleSequencerForms
                 sampleSourceComboBox.Items.Add(filePath);
             }
         }
+
+        public void AddToComboBox(string str)
+        {
+            sampleSourceComboBox.Items.Add(str);
+            sampleSourceComboBox.SelectedItem = str;
+        }
     }
 }

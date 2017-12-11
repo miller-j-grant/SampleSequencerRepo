@@ -1,4 +1,11 @@
-﻿using System;
+﻿/***************************************************************************************
+    Title: NAudioWPFDemo Source Code
+    Author: Mark Heath
+    Date: November 4, 2017
+    Availability: http://naudio.codeplex.com/SourceControl/latest#readme.txt
+***************************************************************************************/
+
+using System;
 using NAudio.Wave;
 
 namespace NAudioSampleSequencerForms
