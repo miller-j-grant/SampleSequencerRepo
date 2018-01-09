@@ -78,9 +78,8 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.ComboBox sampleSourceComboBox;
         private System.Windows.Forms.Label dividerLabel;
         private System.Windows.Forms.Button browseButton;
+        public System.Windows.Forms.ComboBox sampleSourceComboBox;
     }
 }

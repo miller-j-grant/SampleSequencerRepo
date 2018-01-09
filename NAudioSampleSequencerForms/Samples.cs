@@ -29,10 +29,10 @@ namespace NAudioSampleSequencerForms
             sampleSources = new List<SampleSource>();
             FilePaths = new List<string>();
 
-            FilePaths.Add("D:/VS Workspace/NAudioSampleSequencerForms/NAudioSampleSequencerForms/Samples/kick-trimmed.wav");
-            FilePaths.Add("D:/VS Workspace/NAudioSampleSequencerForms/NAudioSampleSequencerForms/Samples/snare-trimmed.wav");
-            FilePaths.Add("D:/VS Workspace/NAudioSampleSequencerForms/NAudioSampleSequencerForms/Samples/closed-hat-trimmed.wav");
-            FilePaths.Add("D:/VS Workspace/NAudioSampleSequencerForms/NAudioSampleSequencerForms/Samples/open-hat-trimmed.wav");
+            FilePaths.Add("D:\\VS Workspace\\NAudioSampleSequencerForms\\NAudioSampleSequencerForms\\Samples\\kick-trimmed.wav");
+            FilePaths.Add("D:\\VS Workspace\\NAudioSampleSequencerForms\\NAudioSampleSequencerForms\\Samples\\snare-trimmed.wav");
+            FilePaths.Add("D:\\VS Workspace\\NAudioSampleSequencerForms\\NAudioSampleSequencerForms\\Samples\\closed-hat-trimmed.wav");
+            FilePaths.Add("D:\\VS Workspace\\NAudioSampleSequencerForms\\NAudioSampleSequencerForms\\Samples\\open-hat-trimmed.wav");
 
             sampleSources.Add(kickSample);
             sampleSources.Add(snareSample);
@@ -56,6 +56,13 @@ namespace NAudioSampleSequencerForms
             SampleSource newSample = SampleSource.CreateFromWaveFile(filepath);
             sampleSources.Add(newSample);
             FilePaths.Add(filepath);
+        }
+
+        public void setSample(string filepath, int i)
+        {
+            SampleSource sample = SampleSource.CreateFromWaveFile(filepath);
+            sampleSources[i] = sample;
+            FilePaths[i] = filepath;
         }
     }
 }

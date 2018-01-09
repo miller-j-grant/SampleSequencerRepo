@@ -12,13 +12,18 @@ namespace NAudioSampleSequencerForms
 {
     public partial class SampleControlCollection : UserControl
     {
+
+        Form parent;
+        
         public SampleControlCollection()
         {
             InitializeComponent();
+
+            this.parent = (Form)this.FindForm();
+
             // Associate the event-handling method with the 
             // SelectedIndexChanged event.
-            this.sampleSourceComboBox.SelectedIndexChanged +=
-                new System.EventHandler(sampleSourceComboBox_SelectedIndexChanged);
+            this.sampleSourceComboBox.SelectedIndexChanged += new System.EventHandler(sampleSourceComboBox_SelectedIndexChanged);
         }
 
         private void SampleControlCollection_Load(object sender, EventArgs e)
@@ -41,10 +46,11 @@ namespace NAudioSampleSequencerForms
             {
                 string filePath = openFileDialog.FileName;
                 sampleSourceComboBox.Items.Add(filePath);
+                sampleSourceComboBox.SelectedItem = filePath;
             }
         }
 
-        private void sampleSourceComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        public void sampleSourceComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
@@ -53,6 +59,11 @@ namespace NAudioSampleSequencerForms
         {
             sampleSourceComboBox.Items.Add(str);
             sampleSourceComboBox.SelectedItem = str;
+        }
+
+        private void setButton_Click(object sender, EventArgs e)
+        {
+        
         }
     }
 }

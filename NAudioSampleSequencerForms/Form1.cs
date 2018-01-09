@@ -50,10 +50,10 @@ namespace NAudioSampleSequencerForms
             DrawPattern();
 
             //SampleControlCollection initialization
-            string[] defaultFiles = { "D:/VS Workspace/NAudioSampleSequencerForms/NAudioSampleSequencerForms/Samples/kick-trimmed.wav",
-                "D:/VS Workspace/NAudioSampleSequencerForms/NAudioSampleSequencerForms/Samples/snare-trimmed.wav",
-                "D:/VS Workspace/NAudioSampleSequencerForms/NAudioSampleSequencerForms/Samples/closed-hat-trimmed.wav",
-                "D:/VS Workspace/NAudioSampleSequencerForms/NAudioSampleSequencerForms/Samples/open-hat-trimmed.wav"};
+            string[] defaultFiles = { "D:\\VS Workspace\\NAudioSampleSequencerForms\\NAudioSampleSequencerForms\\Samples\\kick-trimmed.wav",
+                "D:\\VS Workspace\\NAudioSampleSequencerForms\\NAudioSampleSequencerForms\\Samples\\snare-trimmed.wav",
+                "D:\\VS Workspace\\NAudioSampleSequencerForms\\NAudioSampleSequencerForms\\Samples\\closed-hat-trimmed.wav",
+                "D:\\VS Workspace\\NAudioSampleSequencerForms\\NAudioSampleSequencerForms\\Samples\\open-hat-trimmed.wav"};
 
             for (int i = 0; i < 4; i++)
             {
@@ -122,6 +122,22 @@ namespace NAudioSampleSequencerForms
         private void setTempoButton_Click(object sender, EventArgs e)
         {
             tempo = Convert.ToInt32(tempoTextBox.Text);
+        }
+
+        private void setSamplesButton_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < sccList.Count; i++)
+            {
+                //Set new note name
+                String str = sccList[i].sampleSourceComboBox.SelectedItem.ToString();
+                Char delimiter = '\\';
+                String[] substrings = str.Split(delimiter);
+                notes[i] = substrings[substrings.Length - 1];
+                patternDataGrid.Rows[i].Cells[0].Value = notes[i];
+
+                //Set sample
+                patternSequencer.Samples.setSample(str, i);
+            }
         }
 
         private void AddNewSampleRow()
