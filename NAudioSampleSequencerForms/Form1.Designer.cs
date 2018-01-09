@@ -40,10 +40,14 @@
             this.masterPlaybackButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.stopPlaybackButton = new System.Windows.Forms.ToolStripButton();
-            this.patternDataGrid = new System.Windows.Forms.DataGridView();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.setSamplesButton = new System.Windows.Forms.ToolStripButton();
+            this.patternDataGrid = new System.Windows.Forms.DataGridView();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.clearPatternButton = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.toolStrip2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.patternDataGrid)).BeginInit();
@@ -74,7 +78,7 @@
             // newSampleMenuItem
             // 
             this.newSampleMenuItem.Name = "newSampleMenuItem";
-            this.newSampleMenuItem.Size = new System.Drawing.Size(168, 26);
+            this.newSampleMenuItem.Size = new System.Drawing.Size(181, 26);
             this.newSampleMenuItem.Text = "New Sample";
             this.newSampleMenuItem.Click += new System.EventHandler(this.newSampleMenuItem_Click);
             // 
@@ -85,13 +89,17 @@
             this.tempoLabel,
             this.tempoTextBox,
             this.setTempoButton,
+            this.toolStripSeparator2,
             this.toolStripSeparator1,
             this.masterPlaybackButton,
-            this.toolStripSeparator2,
+            this.toolStripSeparator5,
             this.stopPlaybackButton,
             this.toolStripSeparator3,
             this.toolStripSeparator4,
-            this.setSamplesButton});
+            this.setSamplesButton,
+            this.toolStripSeparator6,
+            this.toolStripSeparator7,
+            this.clearPatternButton});
             this.toolStrip2.Location = new System.Drawing.Point(0, 27);
             this.toolStrip2.Name = "toolStrip2";
             this.toolStrip2.Size = new System.Drawing.Size(982, 27);
@@ -150,17 +158,6 @@
             this.stopPlaybackButton.Text = "Stop Playback";
             this.stopPlaybackButton.Click += new System.EventHandler(this.stopPlaybackButton_Click);
             // 
-            // patternDataGrid
-            // 
-            this.patternDataGrid.AllowUserToOrderColumns = true;
-            this.patternDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.patternDataGrid.Location = new System.Drawing.Point(14, 66);
-            this.patternDataGrid.Name = "patternDataGrid";
-            this.patternDataGrid.RowTemplate.Height = 24;
-            this.patternDataGrid.Size = new System.Drawing.Size(956, 319);
-            this.patternDataGrid.TabIndex = 2;
-            this.patternDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.patternDataGrid_CellContentClick);
-            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
@@ -180,6 +177,42 @@
             this.setSamplesButton.Size = new System.Drawing.Size(116, 24);
             this.setSamplesButton.Text = "Set All Samples";
             this.setSamplesButton.Click += new System.EventHandler(this.setSamplesButton_Click);
+            // 
+            // patternDataGrid
+            // 
+            this.patternDataGrid.AllowUserToOrderColumns = true;
+            this.patternDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.patternDataGrid.Location = new System.Drawing.Point(14, 66);
+            this.patternDataGrid.Name = "patternDataGrid";
+            this.patternDataGrid.RowTemplate.Height = 24;
+            this.patternDataGrid.Size = new System.Drawing.Size(956, 319);
+            this.patternDataGrid.TabIndex = 2;
+            this.patternDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.patternDataGrid_CellContentClick);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 27);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 27);
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 27);
+            // 
+            // clearPatternButton
+            // 
+            this.clearPatternButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.clearPatternButton.Image = ((System.Drawing.Image)(resources.GetObject("clearPatternButton.Image")));
+            this.clearPatternButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.clearPatternButton.Name = "clearPatternButton";
+            this.clearPatternButton.Size = new System.Drawing.Size(97, 24);
+            this.clearPatternButton.Text = "Clear Pattern";
+            this.clearPatternButton.Click += new System.EventHandler(this.clearPatternButton_Click);
             // 
             // Form1
             // 
@@ -219,6 +252,10 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripButton setSamplesButton;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        private System.Windows.Forms.ToolStripButton clearPatternButton;
     }
 }
 

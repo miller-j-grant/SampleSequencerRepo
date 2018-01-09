@@ -76,7 +76,7 @@ namespace NAudioSampleSequencerForms
 
         private void newSampleMenuItem_Click(object sender, EventArgs e)
         {
-            string defaultFile = "D:/VS Workspace/NAudioSampleSequencerForms/NAudioSampleSequencerForms/Samples/snare-trimmed.wav";
+            string defaultFile = "D:\\VS Workspace\\NAudioSampleSequencerForms\\NAudioSampleSequencerForms\\Samples\\snare-trimmed.wav";
 
             SampleControlCollection scc = new SampleControlCollection();
             sccList.Add(scc);
@@ -140,6 +140,22 @@ namespace NAudioSampleSequencerForms
             }
         }
 
+        private void clearPatternButton_Click(object sender, EventArgs e)
+        {
+            for (int step = 0; step < pattern.Steps; step++)
+            {
+                for (int note = 0; note < pattern.Notes; note++)
+                {
+                    if (GetBackColor(note, step) == false)
+                    {
+                        this.pattern[note, step] = 0;
+                    }
+                }
+            }
+
+            DrawPattern();
+        }
+
         private void AddNewSampleRow()
         {
             string defaultSample = "snare-trimmed.wav";
@@ -156,11 +172,6 @@ namespace NAudioSampleSequencerForms
                     this.pattern[n, j] = oldPattern[n, j];
                 }
             }
-
-            //for (int k = 0; k < pattern.Steps; k++)
-            //{
-            //    this.pattern[pattern.Notes - 1, k] = 0;
-            //}
 
             DrawNoteNames();
             DrawPattern();
@@ -196,7 +207,11 @@ namespace NAudioSampleSequencerForms
                 {
                     if (GetBackColor(note, step) == false)
                     {
-                        patternDataGrid.Rows[note].Cells[step+1].Style.BackColor = Color.LightSalmon;
+                        patternDataGrid.Rows[note].Cells[step + 1].Style.BackColor = Color.LightSalmon;
+                    }
+                    else
+                    {
+                        patternDataGrid.Rows[note].Cells[step + 1].Style.BackColor = Color.White;
                     }
                     patternDataGrid.Rows[note].Cells[step + 1].Tag = new PatternIndex(note, step);
 
