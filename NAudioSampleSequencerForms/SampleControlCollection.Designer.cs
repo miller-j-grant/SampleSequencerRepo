@@ -31,6 +31,8 @@
             this.sampleSourceComboBox = new System.Windows.Forms.ComboBox();
             this.dividerLabel = new System.Windows.Forms.Label();
             this.browseButton = new System.Windows.Forms.Button();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
             // sampleSourceComboBox
@@ -62,16 +64,25 @@
             this.browseButton.UseVisualStyleBackColor = true;
             this.browseButton.Click += new System.EventHandler(this.browseButton_Click);
             // 
+            // trackBar1
+            // 
+            this.trackBar1.Location = new System.Drawing.Point(658, 35);
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(315, 56);
+            this.trackBar1.TabIndex = 3;
+            // 
             // SampleControlCollection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.browseButton);
             this.Controls.Add(this.dividerLabel);
             this.Controls.Add(this.sampleSourceComboBox);
             this.Name = "SampleControlCollection";
             this.Size = new System.Drawing.Size(1000, 100);
             this.Load += new System.EventHandler(this.SampleControlCollection_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -81,5 +92,6 @@
         private System.Windows.Forms.Label dividerLabel;
         private System.Windows.Forms.Button browseButton;
         public System.Windows.Forms.ComboBox sampleSourceComboBox;
+        private System.Windows.Forms.TrackBar trackBar1;
     }
 }

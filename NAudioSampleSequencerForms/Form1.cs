@@ -69,11 +69,22 @@ namespace NAudioSampleSequencerForms
             patternSequencer = new PatternSampleProvider(pattern);
         }
 
+        /// <summary>
+        /// The masterPlaybackButton_Click event handler calls the Play function to start playback.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void masterPlaybackButton_Click(object sender, EventArgs e)
         {
             Play();
         }
 
+        /// <summary>
+        /// The newSampleMenuItem_Click event handler creates a new SampleControlCollection and adds a new sample to the 
+        /// PatternSampleProvider set to a default file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void newSampleMenuItem_Click(object sender, EventArgs e)
         {
             string defaultFile = "D:\\VS Workspace\\NAudioSampleSequencerForms\\NAudioSampleSequencerForms\\Samples\\snare-trimmed.wav";
@@ -114,16 +125,32 @@ namespace NAudioSampleSequencerForms
             }
         }
 
+        /// <summary>
+        /// The stopPlaybackButton_Click event handler calls the Stop function to halt playback.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void stopPlaybackButton_Click(object sender, EventArgs e)
         {
             Stop();
         }
 
+        /// <summary>
+        /// The setTempoButton_Click event handler sets the tempo variable to the current value of the tempoBox TextBox.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void setTempoButton_Click(object sender, EventArgs e)
         {
             tempo = Convert.ToInt32(tempoTextBox.Text);
         }
 
+        /// <summary>
+        /// The setSampleButton_Click event handler iterates through each sample and sets it to what the current
+        /// SelectedItem of its corresponding ComboBox is.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void setSamplesButton_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < sccList.Count; i++)
@@ -140,13 +167,19 @@ namespace NAudioSampleSequencerForms
             }
         }
 
+        /// <summary>
+        /// The clearPatternButton_Click event handler sets every (note,step) pairing in the Pattern to 0, erasing the
+        /// intent to play a sample on the pairing.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void clearPatternButton_Click(object sender, EventArgs e)
         {
             for (int step = 0; step < pattern.Steps; step++)
             {
                 for (int note = 0; note < pattern.Notes; note++)
                 {
-                    if (GetBackColor(note, step) == false)
+                    if (GetBackColor(note, step) == true)
                     {
                         this.pattern[note, step] = 0;
                     }
@@ -156,6 +189,10 @@ namespace NAudioSampleSequencerForms
             DrawPattern();
         }
 
+        /// <summary>
+        /// The AddNewSampleRow function creates a new row in the DataGridView that represents the new sample added by
+        /// the user.
+        /// </summary>
         private void AddNewSampleRow()
         {
             string defaultSample = "snare-trimmed.wav";
@@ -177,6 +214,9 @@ namespace NAudioSampleSequencerForms
             DrawPattern();
         }
 
+        /// <summary>
+        /// The Play function starts playback of the drum machine.
+        /// </summary>
         private void Play()
         {
             if (waveOut != null)
@@ -184,13 +224,16 @@ namespace NAudioSampleSequencerForms
                 Stop();
             }
             waveOut = new WaveOut();
-            //this.patternSequencer = new PatternSampleProvider(pattern);
             this.patternSequencer.Reset(pattern);
             this.patternSequencer.Tempo = tempo;
             waveOut.Init(patternSequencer);
             waveOut.Play();
         }
 
+        /// <summary>
+        /// The DrawNoteNames function changes the values of the left most column to be the names of the samples currently
+        /// set by the user.
+        /// </summary>
         private void DrawNoteNames()
         {
             for (int note = 0; note < pattern.Notes; note++)
@@ -199,13 +242,17 @@ namespace NAudioSampleSequencerForms
             }
         }
 
+        /// <summary>
+        /// The DrawPattern function changes the color of all DataGridView cells that are meant to play a sample on its beat
+        /// to LightSalmon. Otherwise, the cell is the color White.
+        /// </summary>
         private void DrawPattern()
         {
             for (int step = 0; step < pattern.Steps; step++)
             {
                 for (int note = 0; note < pattern.Notes; note++)
                 {
-                    if (GetBackColor(note, step) == false)
+                    if (GetBackColor(note, step) == true)
                     {
                         patternDataGrid.Rows[note].Cells[step + 1].Style.BackColor = Color.LightSalmon;
                     }
@@ -219,15 +266,23 @@ namespace NAudioSampleSequencerForms
             }
         }
 
+        /// <summary>
+        /// The GetBackColor function checks if a (note,step) pairing in the Pattern is true, meaning
+        /// a sample is meant to be played on that (note,step) pairing, or false.
+        /// </summary>
+        /// <param name="note"> note is the row on the DataGridView, or the sample that is being played. </param>
+        /// <param name="step"> step is the column on the DataGridView, or the beat that the sample is played. </param>
+        /// <returns> true if the sample is to be played on the (note,step) pairing. false if the sample is not to
+        /// be played on the (note,step) pairing. </returns>
         private bool GetBackColor(int note, int step)
         {
             if (pattern[note, step] == 0)
             {
-                return true;
+                return false;
             }
             else
             {
-                return false;
+                return true;
             }
         }
 
@@ -242,11 +297,13 @@ namespace NAudioSampleSequencerForms
             public int Step { get; private set; }
         }
 
+        /// <summary>
+        /// The Stop function stops the playback of the drum machine.
+        /// </summary>
         private void Stop()
         {
             if (waveOut != null)
             {
-                //this.patternSequencer = null;
                 waveOut.Dispose();
                 waveOut = null;
             }
