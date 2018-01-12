@@ -32,22 +32,24 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.fileDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.newSampleMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newPatternMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearPatternMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
             this.tempoLabel = new System.Windows.Forms.ToolStripLabel();
             this.tempoTextBox = new System.Windows.Forms.ToolStripTextBox();
             this.setTempoButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.masterPlaybackButton = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.stopPlaybackButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.setSamplesButton = new System.Windows.Forms.ToolStripButton();
-            this.patternDataGrid = new System.Windows.Forms.DataGridView();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.clearPatternButton = new System.Windows.Forms.ToolStripButton();
+            this.patternDataGrid = new System.Windows.Forms.DataGridView();
+            this.patternLabel = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.toolStrip2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.patternDataGrid)).BeginInit();
@@ -68,7 +70,9 @@
             // 
             this.fileDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.fileDropDownButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newSampleMenuItem});
+            this.newSampleMenuItem,
+            this.newPatternMenuItem,
+            this.clearPatternMenuItem});
             this.fileDropDownButton.Image = ((System.Drawing.Image)(resources.GetObject("fileDropDownButton.Image")));
             this.fileDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.fileDropDownButton.Name = "fileDropDownButton";
@@ -80,7 +84,20 @@
             this.newSampleMenuItem.Name = "newSampleMenuItem";
             this.newSampleMenuItem.Size = new System.Drawing.Size(181, 26);
             this.newSampleMenuItem.Text = "New Sample";
-            this.newSampleMenuItem.Click += new System.EventHandler(this.newSampleMenuItem_Click);
+            //this.newSampleMenuItem.Click += new System.EventHandler(this.newSampleMenuItem_Click);
+            // 
+            // newPatternMenuItem
+            // 
+            this.newPatternMenuItem.Name = "newPatternMenuItem";
+            this.newPatternMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.newPatternMenuItem.Text = "New Pattern";
+            this.newPatternMenuItem.Click += new System.EventHandler(this.newPatternMenuItem_Click);
+            // 
+            // clearPatternMenuItem
+            // 
+            this.clearPatternMenuItem.Name = "clearPatternMenuItem";
+            this.clearPatternMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.clearPatternMenuItem.Text = "Clear Pattern";
             // 
             // toolStrip2
             // 
@@ -98,8 +115,7 @@
             this.toolStripSeparator4,
             this.setSamplesButton,
             this.toolStripSeparator6,
-            this.toolStripSeparator7,
-            this.clearPatternButton});
+            this.toolStripSeparator7});
             this.toolStrip2.Location = new System.Drawing.Point(0, 27);
             this.toolStrip2.Name = "toolStrip2";
             this.toolStrip2.Size = new System.Drawing.Size(982, 27);
@@ -128,6 +144,11 @@
             this.setTempoButton.Text = "Set Tempo";
             this.setTempoButton.Click += new System.EventHandler(this.setTempoButton_Click);
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 27);
+            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
@@ -143,10 +164,10 @@
             this.masterPlaybackButton.Text = "Master Playback";
             this.masterPlaybackButton.Click += new System.EventHandler(this.masterPlaybackButton_Click);
             // 
-            // toolStripSeparator2
+            // toolStripSeparator5
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 27);
             // 
             // stopPlaybackButton
             // 
@@ -178,22 +199,6 @@
             this.setSamplesButton.Text = "Set All Samples";
             this.setSamplesButton.Click += new System.EventHandler(this.setSamplesButton_Click);
             // 
-            // patternDataGrid
-            // 
-            this.patternDataGrid.AllowUserToOrderColumns = true;
-            this.patternDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.patternDataGrid.Location = new System.Drawing.Point(14, 66);
-            this.patternDataGrid.Name = "patternDataGrid";
-            this.patternDataGrid.RowTemplate.Height = 24;
-            this.patternDataGrid.Size = new System.Drawing.Size(956, 319);
-            this.patternDataGrid.TabIndex = 2;
-            this.patternDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.patternDataGrid_CellContentClick);
-            // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 27);
-            // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
@@ -204,15 +209,24 @@
             this.toolStripSeparator7.Name = "toolStripSeparator7";
             this.toolStripSeparator7.Size = new System.Drawing.Size(6, 27);
             // 
-            // clearPatternButton
+            // patternDataGrid
             // 
-            this.clearPatternButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.clearPatternButton.Image = ((System.Drawing.Image)(resources.GetObject("clearPatternButton.Image")));
-            this.clearPatternButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.clearPatternButton.Name = "clearPatternButton";
-            this.clearPatternButton.Size = new System.Drawing.Size(97, 24);
-            this.clearPatternButton.Text = "Clear Pattern";
-            this.clearPatternButton.Click += new System.EventHandler(this.clearPatternButton_Click);
+            this.patternDataGrid.AllowUserToOrderColumns = true;
+            this.patternDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.patternDataGrid.Location = new System.Drawing.Point(12, 89);
+            this.patternDataGrid.Name = "patternDataGrid";
+            this.patternDataGrid.RowTemplate.Height = 24;
+            this.patternDataGrid.Size = new System.Drawing.Size(956, 319);
+            this.patternDataGrid.TabIndex = 2;
+            // 
+            // patternLabel
+            // 
+            this.patternLabel.AutoSize = true;
+            this.patternLabel.Location = new System.Drawing.Point(12, 69);
+            this.patternLabel.Name = "patternLabel";
+            this.patternLabel.Size = new System.Drawing.Size(67, 17);
+            this.patternLabel.TabIndex = 3;
+            this.patternLabel.Text = "Pattern 1";
             // 
             // Form1
             // 
@@ -220,6 +234,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(982, 553);
+            this.Controls.Add(this.patternLabel);
             this.Controls.Add(this.patternDataGrid);
             this.Controls.Add(this.toolStrip2);
             this.Controls.Add(this.toolStrip1);
@@ -255,7 +270,9 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
-        private System.Windows.Forms.ToolStripButton clearPatternButton;
+        private System.Windows.Forms.ToolStripMenuItem newPatternMenuItem;
+        private System.Windows.Forms.Label patternLabel;
+        private System.Windows.Forms.ToolStripMenuItem clearPatternMenuItem;
     }
 }
 

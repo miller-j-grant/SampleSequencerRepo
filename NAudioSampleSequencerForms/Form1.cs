@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 using System.Windows.Input;
 using System.ComponentModel;
 using System.Collections.Generic;
@@ -16,6 +17,9 @@ namespace NAudioSampleSequencerForms
         private int tempo;
         private List<string> notes;
         private List<SampleControlCollection> sccList;
+        private List<Panel> patternPanels;
+        private List<Panel> sccPanels;
+        //private MixingSampleProvider mixer;
 
         public Form1()
         {
@@ -24,6 +28,7 @@ namespace NAudioSampleSequencerForms
             tempo = Convert.ToInt32(tempoTextBox.Text);
             sccList = new List<SampleControlCollection>();
             notes = new List<string>();
+            sccPanels = new List<Panel>();
 
             //patternDataGrid initialization
             patternDataGrid.ColumnCount = 17;
@@ -31,11 +36,13 @@ namespace NAudioSampleSequencerForms
 
             patternDataGrid.CellClick += new DataGridViewCellEventHandler(patternDataGrid_CellClick);
 
+            //add the sample names to List for use on the patternDataGrid
             notes.Add("kick-trimmed.wav");
             notes.Add("snare-trimmed.wav");
             notes.Add("closed-hats-trimmed.wav");
             notes.Add("open-hats-trimmed.wav");
 
+            //initialize the Pattern
             this.pattern = new Pattern(notes, 16);
 
             // auto-setup with a simple example beat
@@ -46,27 +53,47 @@ namespace NAudioSampleSequencerForms
                 this.pattern[2, n] = 127;
             }
 
+            //"draw" the sample names and the pattern onto the patternDataGrid
             DrawNoteNames();
             DrawPattern();
 
+            patternSequencer = new PatternSampleProvider(pattern);
+
             //SampleControlCollection initialization
-            string[] defaultFiles = { "D:\\VS Workspace\\NAudioSampleSequencerForms\\NAudioSampleSequencerForms\\Samples\\kick-trimmed.wav",
-                "D:\\VS Workspace\\NAudioSampleSequencerForms\\NAudioSampleSequencerForms\\Samples\\snare-trimmed.wav",
-                "D:\\VS Workspace\\NAudioSampleSequencerForms\\NAudioSampleSequencerForms\\Samples\\closed-hat-trimmed.wav",
-                "D:\\VS Workspace\\NAudioSampleSequencerForms\\NAudioSampleSequencerForms\\Samples\\open-hat-trimmed.wav"};
+            string[] defaultFiles = { patternSequencer.Samples.FilePaths[0],
+                patternSequencer.Samples.FilePaths[1],
+                patternSequencer.Samples.FilePaths[2],
+                patternSequencer.Samples.FilePaths[3]};
+
+            //create panel to group together the initial SampleControlCollections for pattern 1
+            Panel panel = new Panel();
+            panel.Location = new Point(0, 350);
+            panel.AutoSize = true;
 
             for (int i = 0; i < 4; i++)
             {
                 SampleControlCollection scc = new SampleControlCollection();
                 sccList.Add(scc);
                 scc.Name = "scc" + (sccList.Count - 1);
-                scc.Location = new Point(0, 350 + (100 * (sccList.Count - 1)));
+                scc.Location = new Point(0, 0 + (100 * (sccList.Count - 1)));
                 scc.AddToComboBox(defaultFiles[i]);
 
-                this.Controls.Add(scc);
+                panel.Controls.Add(scc);
             }
 
-            patternSequencer = new PatternSampleProvider(pattern);
+            sccPanels.Add(panel);
+            this.Controls.Add(panel);
+
+            //add button to newSampleMenuItem to add new samples to Pattern 1
+            //ToolStripDropDown newButton = new ToolStripDropDown();
+            //newButton.Name = "newSamplePattern" + (newSampleMenuItem.DropDownItems.Count + 1);
+            //newButton.Text = "Pattern " + (newSampleMenuItem.DropDownItems.Count + 1);
+            //newButton.Click += (sender, e) => newSampleMenuItem_Click(sender, e, (newSampleMenuItem.DropDownItems.Count + 1));
+            newSampleMenuItem.DropDownItems.Add("Pattern " + (newSampleMenuItem.DropDownItems.Count + 1));
+            newSampleMenuItem.DropDownItems[0].Name = "newSamplePattern" + (newSampleMenuItem.DropDownItems.Count + 1);
+            newSampleMenuItem.DropDownItems[0].Click += (sender, e) => newSampleMenuItem_Click(sender, e, 0);
+
+            //mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(16000, 2));
         }
 
         /// <summary>
@@ -85,23 +112,26 @@ namespace NAudioSampleSequencerForms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void newSampleMenuItem_Click(object sender, EventArgs e)
+        private void newSampleMenuItem_Click(object sender, EventArgs e, int button)
         {
             string defaultFile = "D:\\VS Workspace\\NAudioSampleSequencerForms\\NAudioSampleSequencerForms\\Samples\\snare-trimmed.wav";
 
             SampleControlCollection scc = new SampleControlCollection();
             sccList.Add(scc);
             scc.Name = "scc" + (sccList.Count - 1);
-            scc.Location = new Point(0, 350 + (100 * (sccList.Count - 1)));
+            scc.Location = new Point(0, 0 + (100 * (sccList.Count - 1)));
             scc.AddToComboBox(defaultFile);
 
-            //notes.Add("snare-trimmed.wav");
-
-            this.Controls.Add(scc);
+            sccPanels[button].Controls.Add(scc);
 
             patternSequencer.Samples.AddNewSample(defaultFile);
 
             AddNewSampleRow();
+        }
+
+        private void newPatternMenuItem_Click(object sender, EventArgs e)
+        {
+             
         }
 
         private void patternDataGrid_CellContentClick(object sender, EventArgs e)
@@ -115,7 +145,7 @@ namespace NAudioSampleSequencerForms
             PatternIndex pi = (PatternIndex)cell.Tag;
 
             pattern[pi.Note, pi.Step] = pattern[pi.Note, pi.Step] == 0 ? (byte)127 : (byte)0;
-            if (GetBackColor(pi.Note, pi.Step) == false)
+            if (GetBackColor(pi.Note, pi.Step) == true)
             {
                 cell.Style.BackColor = Color.LightSalmon;
             }
@@ -173,21 +203,21 @@ namespace NAudioSampleSequencerForms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void clearPatternButton_Click(object sender, EventArgs e)
-        {
-            for (int step = 0; step < pattern.Steps; step++)
-            {
-                for (int note = 0; note < pattern.Notes; note++)
-                {
-                    if (GetBackColor(note, step) == true)
-                    {
-                        this.pattern[note, step] = 0;
-                    }
-                }
-            }
+        //private void clearPatternButton_Click(object sender, EventArgs e)
+        //{
+        //    for (int step = 0; step < pattern.Steps; step++)
+        //    {
+        //        for (int note = 0; note < pattern.Notes; note++)
+        //        {
+        //            if (GetBackColor(note, step) == true)
+        //            {
+        //                this.pattern[note, step] = 0;
+        //            }
+        //        }
+        //    }
 
-            DrawPattern();
-        }
+        //    DrawPattern();
+        //}
 
         /// <summary>
         /// The AddNewSampleRow function creates a new row in the DataGridView that represents the new sample added by

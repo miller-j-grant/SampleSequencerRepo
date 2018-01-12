@@ -17,8 +17,9 @@ namespace NAudioSampleSequencerForms
     class Samples
     {
         public List<SampleSource> sampleSources { get; set; }
-        private WaveFormat waveFormat;
+        public WaveFormat waveFormat { get; set; }
         public List<string> FilePaths { get; set; }
+        public int Channels { get; set; }
 
         public Samples()
         {
@@ -38,6 +39,8 @@ namespace NAudioSampleSequencerForms
             sampleSources.Add(snareSample);
             sampleSources.Add(closedHatsSample);
             sampleSources.Add(openHatsSample);
+
+            Channels = 4;
             this.waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(openHatsSample.SampleWaveFormat.SampleRate, openHatsSample.SampleWaveFormat.Channels);
         }
 
@@ -56,6 +59,7 @@ namespace NAudioSampleSequencerForms
             SampleSource newSample = SampleSource.CreateFromWaveFile(filepath);
             sampleSources.Add(newSample);
             FilePaths.Add(filepath);
+            Channels++;
         }
 
         public void setSample(string filepath, int i)
